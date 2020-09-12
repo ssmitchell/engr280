@@ -26,10 +26,11 @@ class CovidDataset:
         """
         max_case_day = self.data[0][0] 
         max_case_num = self.data[0][1]
-        for data_point in self.data:
-            if data_point[1] > max_case_num:
-                max_case_day = data_point[0]
-                max_case_num = data_point[1]
+        for data_index in range(1, len(self.data)):
+            increase = self.data[data_index][1] - self.data[data_index-1][1] 
+            if increase > max_case_num:
+                max_case_day = self.data[data_index][0]
+                max_case_num = increase
         return max_case_day
 
 
@@ -40,15 +41,14 @@ class CovidDataset:
         """
         days -= 1
         # Sets worst day number and range to first n days
-        worst_seven_days_num = sum(datapoint[1] for datapoint 
-            in self.data[0:days])
+        worst_seven_days_num = self.data[days][1] - self.data[0][1]
         worst_seven_days_range = [0, days]
 
         for i in range(0, len(self.data) - days):
-            seven_day_sum = sum([datapoint[1] for datapoint 
-                in self.data[i:i+days]]) 
-            if seven_day_sum > worst_seven_days_num:
-                worst_seven_days_num = seven_day_sum
+            n_day_diff = [datapoint[1] for datapoint 
+                in self.data[i:i+days]] 
+            if n_day_diff[-1] - n_day_diff[0] > worst_seven_days_num:
+                worst_seven_days_num = n_day_diff[-1] - n_day_diff[0] 
                 worst_seven_days_range = [i, i+days]
 
         return (str(self.data[worst_seven_days_range[0]][0]),
