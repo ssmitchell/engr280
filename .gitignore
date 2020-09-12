@@ -134,6 +134,7 @@ dmypy.json
 
 # Custom settings
 
-covid-data/last_timestamp
-covid-data/harrisonburg.json
-covid-data/rockingham.json
+covid-data/*.json
+covid-data/*.csv
+covid-data/bonus/*.json
+covid-data/bonus/*.csv
