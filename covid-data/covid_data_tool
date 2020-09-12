@@ -5,45 +5,31 @@
 # county into own separate csv files and then uses regular expressions
 # and sed to convert csvs into valid json.
 
-function update_hburg_rockingham_covid_data {
+source scripts/csv_to_json
 
-    # Reads last time data file was modified in epoch
-    old_time=`date -d "$(date -r harrisonburg.json +"%Y-%m-%d %H:%M:%S")" +%s`
+function update_hburg_rockingham_covid_data {
+    # Checks if the files exists
+    if [ ! -f harrisonburg.json ] ; then
+        no_file=true
+        echo "NOFILE"
+    else
+        # Reads last time data file was modified in epoch
+        old_time=`date -d "$(date -r harrisonburg.json +"%Y-%m-%d %H:%M:%S")" +%s`
+    fi
 
     # Reads current time in epoch
     now_time=`date +%s`
 
     # Checks if it has been more than 24 hours since data was last downloaded
-    if [ `(echo "$now_time-$old_time") | bc` -gt 86400 ] # 86400 seconds in 24 hours
+    if [ "$no_file" = true ] || [ `(echo "$now_time-$old_time") | bc` -gt 86400 ] # 86400 seconds in 24 hours
     then
         printf "\nLonger than 24 hours since last update. Downloading new data... \n\n"
 
         # Download new data into a csv
         curl https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv > us-counties.csv
 
-        # Greps for Harrisonburg city and Rockingham and puts lines 
-        cat us-counties.csv | grep -i "Harrisonburg city" > harrisonburg-city.csv
-        cat us-counties.csv | grep -i "Rockingham,Virginia" > rockingham.csv
-
-        # Replace 2020-03-22,Rockingham,Virginia,51165,2,0 with ["2020-03-22",2]
-        sed -r "s/([[:digit:]]+-[[:digit:]]+-[[:digit:]]+),[Rockingham|Harrisonburg city]+,Virginia,[[:digit:]]+,([[:digit:]]+),[[:digit:]]+/[\"\1\", \2],/ig" rockingham.csv > rockingham_temp.json
-        # Replace first [ with [[ to make it valid json
-        sed -i "1 s/^\[/[[/" rockingham_temp.json
-        # Replace last , with a ] to make it valid json
-        sed -i "$ s/,$/]/" rockingham_temp.json
-        # Replace newlines with spaces to make it look nicer
-        tr '\n' ' ' < rockingham_temp.json > rockingham.json
-
-        # Repeat above process for Harrisonburg city
-        sed -r "s/([[:digit:]]+-[[:digit:]]+-[[:digit:]]+),[Rockingham|Harrisonburg city]+,Virginia,[[:digit:]]+,([[:digit:]]+),[[:digit:]]+/[\"\1\", \2],/ig" harrisonburg-city.csv > harrisonburg_temp.json
-        sed -i "1 s/^\[/[[/" harrisonburg_temp.json
-        sed -i "$ s/,$/]/" harrisonburg_temp.json
-        tr '\n' ' ' < harrisonburg_temp.json > harrisonburg.json
-
-        # Removes temp files
-        rm harrisonburg-city.csv rockingham.csv rockingham_temp.json harrisonburg_temp.json us-counties.csv
-
-        printf "\nNew files created\n\n"
+        csv_to_json "Harrisonburg city,Virginia" "Harrisonburg City" "harrisonburg" 
+        csv_to_json "Rockingham,Virginia" "Rockingham" "rockingham" 
     else
         printf "\n---------- Data is up to date ----------\n\n"
     fi
