@@ -8,14 +8,6 @@ import constants
 harrisonburg_data = loadWithJSON('harrisonburg.json')
 rockingham_data = loadWithJSON('rockingham.json')
 
-## Print all elements in the list as an example
-for data in harrisonburg_data:
-    date = data[0]
-    cases = data[1]
-    print('On '+date + ' there were '+ str(cases) +' cases in Harrisonburg')
-
-print('\n')
-
 harrisonburg_dataset = CovidDataset(harrisonburg_data)
 rockingham_dataset = CovidDataset(rockingham_data)
 
