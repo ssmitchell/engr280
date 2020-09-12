@@ -131,3 +131,9 @@ dmypy.json
 # VS code settings
 
 .vscode/
+
+# Custom settings
+
+covid-data/last_timestamp
+covid-data/harrisonburg.json
+covid-data/rockingham.json
