@@ -31,4 +31,3 @@ function csv_to_json {
 
     printf "New file created $3.json\n"
 }
-}
