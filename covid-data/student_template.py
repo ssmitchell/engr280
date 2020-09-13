@@ -11,7 +11,7 @@ rockingham_data = loadWithJSON('rockingham.json')
 harrisonburg_dataset = CovidDataset(harrisonburg_data)
 rockingham_dataset = CovidDataset(rockingham_data)
 
-print('When was the first positive COVID case in Rockingham County and'
+print('\n\nWhen was the first positive COVID case in Rockingham County and'
     ' Harrisonburg?\n\nHarrisonburg: %s\nRockingham County: %s\n' %
     (harrisonburg_dataset.get_first_positive(), 
     rockingham_dataset.get_first_positive()))

@@ -1,11 +1,14 @@
 #!/bin/bash
 #
+# Author: Stephen Mitchell
+# Date: 09/13/2020
+#
 # Updates county file if it has been longer than 24 hours since the last one
 # has been downloaded; Splits data for Harrisonburg city and Rockingham
 # county into own separate csv files and then uses regular expressions
 # and sed to convert csvs into valid json.
 
-source scripts/csv_to_json
+source scripts/parse_nyt_data
 
 function update_hburg_rockingham_covid_data {
     # Checks if the files exists
@@ -28,10 +31,12 @@ function update_hburg_rockingham_covid_data {
         # Download new data into a csv
         curl https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv > us-counties.csv
 
-        csv_to_json "Harrisonburg city,Virginia" "Harrisonburg City" "harrisonburg" 
-        csv_to_json "Rockingham,Virginia" "Rockingham" "rockingham" 
+        printf "\n"
+
+        parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
+        parse_nyt_data "Rockingham,Virginia" "rockingham" 
     else
-        printf "\n---------- Data is up to date ----------\n\n"
+        printf "\n---------- Data is up to date ----------\n"
     fi
 }
 

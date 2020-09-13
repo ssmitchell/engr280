@@ -1,6 +1,9 @@
 #!/bin/bash
+#
+# Author: Stephen Mitchell
+# Date: 09/13/2020
 
-function csv_to_json {
+function parse_nyt_data {
     ## Parses the New York Times's covid data us-counties.csv and creates a
     ## .json file for the specified county.
     ##

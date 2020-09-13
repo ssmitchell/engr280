@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Author: Stephen Mitchell
+# Date: 09/13/2020
+#
+# Converts us-counties.csv into harrisonburg.json and rockingham.json
+
+source scripts/parse_nyt_data
+
+parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
+
+parse_nyt_data "Rockingham,Virginia" "rockingham"
