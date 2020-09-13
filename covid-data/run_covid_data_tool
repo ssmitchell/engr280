@@ -7,6 +7,9 @@
 # has been downloaded; Splits data for counties into their own separate 
 # csv files; Uses regular expressions and sed to convert csvs 
 # into valid json.
+#
+# TODO: Have a counties.json that both bash and Python read from for which
+#       counties to download/display info on 
 
 source scripts/parse_nyt_data
 source scripts/file_utils
