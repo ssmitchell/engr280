@@ -1,12 +1,15 @@
 #!/bin/bash
+#
+# Author: Stephen Mitchell
+# Date: 09/13/2020
+#
+# Converts us-counties.csv into harrisonburg.json and rockingham.json
 
-function csv_to_json {
+function parse_nyt {
     ## Parses the New York Times's covid data us-counties.csv and creates a
     ## .json file for the specified county.
     ##
-    ## USAGE:
-    ##
-    ##      csv_to_json (County,State) (Filename)
+    ## USAGE:   parse_nyt (County,State) (Filename)
     ##
 
     # Greps for COUNTY,STATE 
@@ -28,3 +31,7 @@ function csv_to_json {
 
     printf "New file created $2.json\n"
 }
+
+parse_nyt "Harrisonburg city,Virginia" "harrisonburg" 
+
+parse_nyt "Rockingham,Virginia" "rockingham"
