@@ -3,28 +3,18 @@
 # Author: Stephen Mitchell
 # Date: 09/13/2020
 #
-# Updates county file if it has been longer than 24 hours since the last one
-# has been downloaded; Splits data for Harrisonburg city and Rockingham
-# county into own separate csv files and then uses regular expressions
-# and sed to convert csvs into valid json.
+# Updates us-counties.csv if it has been longer than 24 hours since it
+# has been downloaded; Splits data for counties into their own separate 
+# csv files; Uses regular expressions and sed to convert csvs 
+# into valid json.
 
 source scripts/parse_nyt_data
+source scripts/file_utils
 
-function update_hburg_rockingham_covid_data {
-    # Checks if the files exists
-    if [ ! -f harrisonburg.json ] ; then
-        no_file=true
-        echo "NOFILE"
-    else
-        # Reads last time data file was modified in epoch
-        old_time=`date -d "$(date -r harrisonburg.json +"%Y-%m-%d %H:%M:%S")" +%s`
-    fi
-
-    # Reads current time in epoch
-    now_time=`date +%s`
+function update_covid_data {
 
     # Checks if it has been more than 24 hours since data was last downloaded
-    if [ "$no_file" = true ] || [ `(echo "$now_time-$old_time") | bc` -gt 86400 ] # 86400 seconds in 24 hours
+    if file_older_than_24hrs "us-counties.csv"
     then
         printf "\nLonger than 24 hours since last update. Downloading new data... \n\n"
 
@@ -34,16 +24,15 @@ function update_hburg_rockingham_covid_data {
         printf "\n"
 
         parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
-        parse_nyt_data "Rockingham,Virginia" "rockingham" 
+        parse_nyt_data "Rockingham,Virginia" "rockingham"
+        parse_nyt_data "Newport News city,Virginia" "newportnews"
     else
         printf "\n---------- Data is up to date ----------\n"
     fi
 }
 
-# Update data
-
-update_hburg_rockingham_covid_data
+# Update data if necessary
+update_covid_data
 
 # Run python tool
-
 ../env/bin/python student_template.py

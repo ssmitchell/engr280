@@ -2,29 +2,39 @@ from file_utils import loadWithJSON
 from covid_dataset import CovidDataset
 import constants
 
-## Will load all Harrisonburg and Rockingham data into a list of lists
-## Each element in the main list will contain a list of two items, the 
-## str:date and int:cases
-harrisonburg_data = loadWithJSON('harrisonburg.json')
-rockingham_data = loadWithJSON('rockingham.json')
+# Dictionary of names of counties and corresponding filenames with county data.
+# Edit update_county_data to analyze data from additional counties
+files = {
+    'Harrisonburg':'harrisonburg.json', 
+    'Rockingham':'rockingham.json', 
+    'Newport News':'newportnews.json',
+    }
 
-harrisonburg_dataset = CovidDataset(harrisonburg_data)
-rockingham_dataset = CovidDataset(rockingham_data)
+# Make dictionary with key="COUNTY_NAME" and value=COVID_DATASET_OBJECT
+data = {}
+for key in files:
+    try:
+        data[key] = CovidDataset(loadWithJSON(files[key]))
+    except:
+        print("\nFile %s does not exist" % (files[key]))
+    
+print('\nWhen was the first positive COVID cases in each county?\n')
 
-print('\n\nWhen was the first positive COVID case in Rockingham County and'
-    ' Harrisonburg?\n\nHarrisonburg: %s\nRockingham County: %s\n' %
-    (harrisonburg_dataset.get_first_positive(), 
-    rockingham_dataset.get_first_positive()))
+for key in data:
+    print("%s: %s" % (key, data[key].get_first_positive()))
 
-print('What day was the maximum number of cases recorded in Harrisonburg'
-' and Rockingham County?\n\nHarrisonburg: %s\nRockingham County: %s\n' %
-    (harrisonburg_dataset.get_max_case_day(), 
-    rockingham_dataset.get_max_case_day()))
+print('\nWhat day was the maximum number of cases recorded in each county?\n')
 
-print('What was the worst week in the city/county for new COVID cases? '
+for key in data:
+    print("%s: %s" % (key, data[key].get_max_case_day()))
+
+print('\nWhat was the worst week in each city/county for new COVID cases? '
       'When was the rise in cases the fastest over a seven day period?'
-      '\n\nHarrisonburg: %s through %s\nRockingham County: %s through %s\n' % 
-      (harrisonburg_dataset.get_worst_n_days(constants.DAYS_IN_WEEK)[0], 
-      harrisonburg_dataset.get_worst_n_days(constants.DAYS_IN_WEEK)[1], 
-      rockingham_dataset.get_worst_n_days(constants.DAYS_IN_WEEK)[0], 
-      rockingham_dataset.get_worst_n_days(constants.DAYS_IN_WEEK)[1]))
+      '\n')
+
+for key in data:
+    print("%s: %s through %s" % (key, 
+        data[key].get_worst_n_days(constants.DAYS_IN_WEEK)[0], 
+        data[key].get_worst_n_days(constants.DAYS_IN_WEEK)[1]))
+
+print('\n')

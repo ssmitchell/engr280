@@ -3,10 +3,10 @@
 # Author: Stephen Mitchell
 # Date: 09/13/2020
 #
-# Converts us-counties.csv into harrisonburg.json and rockingham.json
+# Converts us-counties.csv into COUNTY.json
 
 source scripts/parse_nyt_data
 
 parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
-
 parse_nyt_data "Rockingham,Virginia" "rockingham"
+parse_nyt_data "Newport News city,Virginia" "newportnews"
