@@ -9,4 +9,3 @@ source scripts/parse_nyt_data
 
 parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
 parse_nyt_data "Rockingham,Virginia" "rockingham"
-parse_nyt_data "Newport News city,Virginia" "newportnews"

@@ -26,9 +26,7 @@ function update_covid_data {
 
         printf "\n"
 
-        parse_nyt_data "Harrisonburg city,Virginia" "harrisonburg" 
-        parse_nyt_data "Rockingham,Virginia" "rockingham"
-        parse_nyt_data "Newport News city,Virginia" "newportnews"
+        ../env/bin/python parse_nyt_data.py
     else
         printf "\n---------- Data is up to date ----------\n"
     fi
