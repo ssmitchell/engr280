@@ -52,6 +52,9 @@ def ParseNytData(county_name, output_file):
     # Last ] to make COUNTY_NAME.json valid json
     output.write("]")
 
+    data.close()
+    output.close()
+
 
 
 
