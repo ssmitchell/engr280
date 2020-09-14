@@ -1,22 +1,20 @@
 from file_utils import loadWithJSON
 from covid_dataset import CovidDataset
+from parse_nyt_data import ParseNytData
 import constants
 
 # Dictionary of names of counties and corresponding filenames with county data.
 # Edit update_county_data to analyze data from additional counties
-files = {
-    'Harrisonburg':'harrisonburg.json', 
-    'Rockingham':'rockingham.json', 
-    'Newport News':'newportnews.json',
-    }
+files = loadWithJSON('counties.json') 
 
 # Make dictionary with key="COUNTY_NAME" and value=COVID_DATASET_OBJECT
 data = {}
-for key in files:
+for i in files:
     try:
-        data[key] = CovidDataset(loadWithJSON(files[key]))
+        ParseNytData(i[1],i[2])
+        data[i[0]] = CovidDataset(loadWithJSON(i[2]))
     except:
-        print("\nFile %s does not exist" % (files[key]))
+        print("\nFile %s does not exist" % (i[2]))
     
 print('\nWhen was the first positive COVID cases in each county?\n')
 
