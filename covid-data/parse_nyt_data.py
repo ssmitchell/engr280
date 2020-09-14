@@ -1,10 +1,27 @@
 import re
 from file_utils import loadWithJSON
 
+"""
+
+Example:
+    $ python parse_nyt_data.py "Harrisonburg city,Virginia" "harrisonburg.json"
+
+"""
+
 def ParseNytData(county_name, output_file): 
     """
     Translate us-counties.csv into output_file.json
     containing data from the specified county
+
+    Args:
+        county_name (str): County and state name as it appears
+        in us-counties.csv (i.e. Harrisonburg city,Virginia)
+        output_file (str): Name of file to save new data to
+        (i.e. harrisonburg.json)
+
+    Returns:
+        None
+
     """
 
     # Open counties.csv for reading
